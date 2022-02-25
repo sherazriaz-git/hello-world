@@ -22,6 +22,6 @@ phases:
       - docker push $REPO_URI:latest
       - docker push $REPO_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"appfront-dev","imageUri":"%s"}]' "$CONTAINER_NAME" "$REPO_URI:$IMAGE_TAG" | tee imagedefinitions.json
+      - echo [{"name":"appfront-dev","imageUri":"044397568552.dkr.ecr.eu-south-1.amazonaws.com/appfront-dev:latest}] > imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
