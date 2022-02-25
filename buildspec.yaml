@@ -7,6 +7,7 @@ phases:
       - eval $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=$AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/$IMAGE_REPO_NAME
       - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - CONTAINER_NAME=appfront-dev
   build:
     commands:
       - echo Build started on `date`
@@ -22,6 +23,6 @@ phases:
       - docker push $REPO_URI:latest
       - docker push $REPO_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - echo [{"name":"appfront-dev","imageUri":"044397568552.dkr.ecr.eu-south-1.amazonaws.com/appfront-dev:latest}] > imagedefinitions.json
+      - printf '[{"name":"%s","imageUri":"%s"}]' "$CONTAINER_NAME" "$REPO_URI:$IMAGE_TAG" | tee imagedefinitions.json
 artifacts:
   files: imagedefinitions.json
